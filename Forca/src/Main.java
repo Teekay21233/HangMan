@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -5,44 +8,58 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Digite a palavra chave: ");
-        String keyWord = sc.nextLine();
+        String[] keyWord = sc.nextLine().split("");
 
         for (int i = 0; i < 100; i++) {
             System.out.println();
         }
 
-        String[] password = keyWord.split("");
-        String[] mask = new String[password.length];
+        List<String> password = Arrays.asList(keyWord);
+        List<String> mask = new ArrayList<>();
 
-        for (int i = 0; i < password.length; i++) {
+        for (String str : password){
+            mask.add("-");
+        }
 
-            mask[i] = "-";
-            System.out.print(mask[i] + " ");
+        for (String str : mask){
+            System.out.print(str + " ");
         }
 
         System.out.println("");
 
-        int count = 5;
+        int lideCount = 5;
+//        int winCount = 0;
 
-        while (count > 0){
+        while (lideCount > 0 && mask.contains("-")){
             System.out.println("");
+            System.out.println("vidas: " + lideCount);
             System.out.print("Digite uma letra: ");
             String letra = sc.nextLine();
 
+            if (password.contains(letra)){
+                for (int i = 0; i < password.size(); i++) {
+                    if (password.get(i).equals(letra)){
+                        mask.set(i,letra);
+                    }
+                }
 
-
-            for (int i = 0; i < password.length; i++) {
-
-
+            }else {
+                lideCount--;
             }
 
-            for (int i = 0; i < password.length; i++) {
-
-                System.out.print(mask[i] + " ");
-
+            for (String str : mask){
+                System.out.print(str + " ");
             }
 
-            System.out.println("Vidas: " + count);
+            System.out.println();
+
+        }
+
+        if (lideCount <= 0){
+            System.out.println("Você perdeu! A palavra era: " + String.join("",password));
+        }
+        if (!mask.contains("-")){
+            System.out.println("Parabéns você ganhou!");
         }
 
         sc.close();
